@@ -1,0 +1,57 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.14.36401.2
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Sharoo.Server.API", "API\Sharoo.Server.API\Sharoo.Server.API.csproj", "{A102FD3C-2C3B-4E88-AB13-B4BBD916612B}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Sharoo.Server.Domain", "Domain\Sharoo.Server.Domain\Sharoo.Server.Domain.csproj", "{0A5DB1E1-305C-4E68-A790-932E2B29937B}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Sharoo.Server.Application", "Application\Sharoo.Server.Application\Sharoo.Server.Application.csproj", "{61E2CD6A-490D-4F4B-822D-84BD5059B509}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Infrastructure", "Infrastructure", "{02EA681E-C7D8-13C7-8484-4AC65E1B71E8}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Domain", "Domain", "{AC12B7BC-5713-4A69-85F8-DC4673E443CA}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Application", "Application", "{0AE33579-69EA-4E34-ABD2-A35194E9C46D}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "API", "API", "{9A0CE7C3-E632-46FD-BB6B-62FF710C530A}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Sharoo.Server.Data", "Infrastructure\Sharoo.Server.Data\Sharoo.Server.Data.csproj", "{5E3C59AD-2946-4826-83BB-A3C65A90B0E5}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{A102FD3C-2C3B-4E88-AB13-B4BBD916612B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A102FD3C-2C3B-4E88-AB13-B4BBD916612B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A102FD3C-2C3B-4E88-AB13-B4BBD916612B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A102FD3C-2C3B-4E88-AB13-B4BBD916612B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0A5DB1E1-305C-4E68-A790-932E2B29937B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0A5DB1E1-305C-4E68-A790-932E2B29937B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0A5DB1E1-305C-4E68-A790-932E2B29937B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0A5DB1E1-305C-4E68-A790-932E2B29937B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{61E2CD6A-490D-4F4B-822D-84BD5059B509}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{61E2CD6A-490D-4F4B-822D-84BD5059B509}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{61E2CD6A-490D-4F4B-822D-84BD5059B509}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{61E2CD6A-490D-4F4B-822D-84BD5059B509}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5E3C59AD-2946-4826-83BB-A3C65A90B0E5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5E3C59AD-2946-4826-83BB-A3C65A90B0E5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5E3C59AD-2946-4826-83BB-A3C65A90B0E5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5E3C59AD-2946-4826-83BB-A3C65A90B0E5}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{A102FD3C-2C3B-4E88-AB13-B4BBD916612B} = {9A0CE7C3-E632-46FD-BB6B-62FF710C530A}
+		{0A5DB1E1-305C-4E68-A790-932E2B29937B} = {AC12B7BC-5713-4A69-85F8-DC4673E443CA}
+		{61E2CD6A-490D-4F4B-822D-84BD5059B509} = {0AE33579-69EA-4E34-ABD2-A35194E9C46D}
+		{5E3C59AD-2946-4826-83BB-A3C65A90B0E5} = {02EA681E-C7D8-13C7-8484-4AC65E1B71E8}
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {6880B360-C892-4360-AAF6-B8517A30E74E}
+	EndGlobalSection
+EndGlobal

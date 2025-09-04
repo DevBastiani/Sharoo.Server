@@ -1,0 +1,6 @@
+@Sharoo.Server.API_HostAddress = http://localhost:5189
+
+# GET {{Sharoo.Server.API_HostAddress}}/weatherforecast/
+# Accept: application/json
+
+###
