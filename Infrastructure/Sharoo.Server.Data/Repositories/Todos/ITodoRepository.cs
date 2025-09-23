@@ -1,6 +1,6 @@
 ﻿using Sharoo.Server.Domain.Entities;
 
-namespace Sharoo.Server.Data.Repositories.Interfaces
+namespace Sharoo.Server.Data.Repositories.Todos
 {
     public interface ITodoRepository
     {

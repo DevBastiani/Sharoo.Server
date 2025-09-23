@@ -1,7 +1,7 @@
 ﻿using Sharoo.Server.Application.DTOs.Todos.Request;
 using Sharoo.Server.Domain.Entities;
 
-namespace Sharoo.Server.Application.Services.Interfaces
+namespace Sharoo.Server.Application.Services.Todos
 {
     public interface ITodoService
     {
