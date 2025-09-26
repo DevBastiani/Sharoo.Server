@@ -8,10 +8,15 @@ namespace Sharoo.Server.Application
     {
         public static void AddDependencyInjections(this IServiceCollection services)
         {
-            services.AddScoped<ITodoService, TodoService>();
+            InitializeServices(services);
 
-            // Call Data layer to register its dependencies
-            DataInitializer.AddDependencyInjections(services);
+            DataInitializer.InitializeRepositories(services);
+            DataInitializer.InitializeDatabase(services);
+        }
+
+        public static void InitializeServices(this IServiceCollection services)
+        {
+            services.AddScoped<ITodoService, TodoService>();
         }
     }
 }

@@ -1,32 +1,49 @@
-﻿using Sharoo.Server.Domain.Entities;
+﻿using Microsoft.EntityFrameworkCore;
+using Sharoo.Server.Domain.Entities;
 
 namespace Sharoo.Server.Data.Repositories.Todos
 {
     public class TodoRepository : ITodoRepository
     {
-        public Task ChangeStatusAsync(Guid todoId, bool isDone)
+        private readonly SharooDbContext _context;
+
+        public TodoRepository(SharooDbContext context)
         {
-            throw new NotImplementedException();
+            _context = context;
         }
 
-        public Task CreateAsync(Task todo)
+        public async Task ChangeStatusAsync(Todo todo)
         {
-            throw new NotImplementedException();
+            todo.IsDone = !todo.IsDone;
+            _context.Todos.Update(todo);
+
+            await _context.SaveChangesAsync();
         }
 
-        public Task DeleteAsync(Guid todoId)
+        public async Task CreateAsync(Todo todo)
         {
-            throw new NotImplementedException();
+            await _context.Todos.AddAsync(todo);
+            await _context.SaveChangesAsync();
         }
 
-        public Task<Todo?> ReadAsync()
+        public async Task DeleteAsync(Todo todo)
         {
-            throw new NotImplementedException();
+            _context.Todos.Remove(todo);
+            await _context.SaveChangesAsync();
         }
 
-        public Task ReadByIdAsync(Guid todoId)
+        public async Task<List<Todo>> ReadAsync()
         {
-            throw new NotImplementedException();
+            return await _context.Todos
+                .AsNoTracking()
+                .ToListAsync();
+        }
+
+        public async Task<Todo?> ReadByIdAsync(Guid todoId)
+        {
+            return await _context.Todos
+                .AsNoTracking()
+                .FirstOrDefaultAsync(t => t.Id == todoId);
         }
     }
 }

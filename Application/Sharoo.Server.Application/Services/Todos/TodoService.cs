@@ -1,33 +1,49 @@
-﻿using Sharoo.Server.Application.DTOs.Todos.Request;
-using Sharoo.Server.Domain.Entities;
+﻿using Sharoo.Server.Domain.Entities;
+using Sharoo.Server.Data.Repositories.Todos;
 
 namespace Sharoo.Server.Application.Services.Todos
 {
     public class TodoService : ITodoService
     {
-        public Task ChangeStatusAsync(TodoChangeStatusRequest todoId)
+        private readonly ITodoRepository _repository;
+
+        public TodoService(ITodoRepository repository)
         {
-            throw new NotImplementedException();
+            _repository = repository;
         }
 
-        public Task CreateAsync(Todo todo)
+        public async Task ChangeStatusAsync(Guid todoId)
         {
-            throw new NotImplementedException();
+            var todo = await _repository.ReadByIdAsync(todoId);
+            if (todo is null) throw new Exception();
+
+            await _repository.ChangeStatusAsync(todo);
         }
 
-        public Task DeleteAsync(Guid todoId)
+        public async Task CreateAsync(Todo todo)
         {
-            throw new NotImplementedException();
+            await _repository.CreateAsync(todo);
         }
 
-        public Task<List<Todo>> ReadAsync()
+        public async Task DeleteAsync(Guid todoId)
         {
-            throw new NotImplementedException();
+            var todo = await _repository.ReadByIdAsync(todoId);
+            if (todo is null) throw new Exception();
+
+            await _repository.DeleteAsync(todo);
         }
 
-        public Task<Todo> ReadByIdAsync(Guid todoId)
+        public async Task<List<Todo>> ReadAsync()
         {
-            throw new NotImplementedException();
+            return await _repository.ReadAsync();
+        }
+
+        public async Task<Todo?> ReadByIdAsync(Guid todoId)
+        {
+            Todo? todo = await _repository.ReadByIdAsync(todoId);
+            if (todo is null) throw new Exception();
+
+            return todo;
         }
     }
 }
