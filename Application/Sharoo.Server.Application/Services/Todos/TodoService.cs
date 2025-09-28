@@ -1,5 +1,5 @@
-﻿using Sharoo.Server.Domain.Entities;
-using Sharoo.Server.Data.Repositories.Todos;
+﻿using Sharoo.Server.Data.Repositories.Todos;
+using Sharoo.Server.Domain.Entities;
 
 namespace Sharoo.Server.Application.Services.Todos
 {

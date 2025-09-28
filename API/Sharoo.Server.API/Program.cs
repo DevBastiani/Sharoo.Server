@@ -3,8 +3,7 @@ using Sharoo.Server.API.Extensions;
 var builder = WebApplication.CreateBuilder(args);
 
 builder.AddArchitectures();
-builder.Services.AddModules();
-
+builder.AddModules();
 var app = builder.Build();
 
 app.UseArchitectures();

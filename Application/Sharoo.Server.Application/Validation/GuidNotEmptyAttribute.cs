@@ -1,14 +1,16 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-public class GuidNotEmptyAttribute : ValidationAttribute
+namespace Sharoo.Server.Application.Validation
 {
-    public GuidNotEmptyAttribute() : base("O formato do campo {0} é inválido.") { }
-
-    protected override ValidationResult IsValid(object value, ValidationContext validationContext)
+    public class GuidNotEmptyAttribute : ValidationAttribute
     {
-        if (value is Guid guid && guid != Guid.Empty)
-            return ValidationResult.Success;
+        public GuidNotEmptyAttribute() : base("O formato do campo {0} é inválido.") { }
 
-        return new ValidationResult(FormatErrorMessage(validationContext.DisplayName));
+        protected override ValidationResult IsValid(object value, ValidationContext validationContext)
+        {
+            if (value is Guid guid && guid != Guid.Empty) return ValidationResult.Success;
+
+            return new ValidationResult(FormatErrorMessage(validationContext.DisplayName));
+        }
     }
 }

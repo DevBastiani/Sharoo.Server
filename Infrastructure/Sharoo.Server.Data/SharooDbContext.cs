@@ -8,5 +8,6 @@ namespace Sharoo.Server.Data
         public SharooDbContext(DbContextOptions<SharooDbContext> options) : base(options) { }
 
         public DbSet<Todo> Todos { get; set; }
+        public DbSet<User> Users { get; set; }
     }
 }

@@ -43,7 +43,7 @@ namespace Sharoo.Server.Data.Repositories.Todos
         {
             return await _context.Todos
                 .AsNoTracking()
-                .FirstOrDefaultAsync(t => t.Id == todoId);
+                .FirstOrDefaultAsync(todo => todo.Id == todoId);
         }
     }
 }

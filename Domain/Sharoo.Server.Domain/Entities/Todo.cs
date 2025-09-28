@@ -6,6 +6,9 @@
         public string? Description { get; set; }
         public DateTime? CompletedAt { get; set; }
         public bool IsDone { get; set; } = false;
+        public required Guid UserId { get; set; }
+
+        public User? User { get; set; }
 
         public void MarkAsDone()
         {
