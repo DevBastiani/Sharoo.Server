@@ -38,7 +38,7 @@ namespace Sharoo.Server.Application.Services.Todos
             return await _repository.ReadAsync();
         }
 
-        public async Task<Todo?> ReadByIdAsync(Guid todoId)
+        public async Task<Todo> ReadByIdAsync(Guid todoId)
         {
             Todo? todo = await _repository.ReadByIdAsync(todoId);
             if (todo is null) throw new Exception();

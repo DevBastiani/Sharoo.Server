@@ -20,9 +20,7 @@ namespace Sharoo.Server.Data.Repositories.Users
 
         public async Task<User?> GetByEmailAndPasswordAsync(string email, string password)
         {
-            return await _context.Users
-                .AsNoTracking()
-                .FirstOrDefaultAsync(user => user.Email == email && user.Password == password);
+            return await _context.Users.FirstOrDefaultAsync(user => user.Email == email && user.Password == password);
         }
     }
 }

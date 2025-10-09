@@ -35,14 +35,12 @@ namespace Sharoo.Server.Data.Repositories.Todos
         public async Task<List<Todo>> ReadAsync()
         {
             return await _context.Todos
-                .AsNoTracking()
                 .ToListAsync();
         }
 
         public async Task<Todo?> ReadByIdAsync(Guid todoId)
         {
             return await _context.Todos
-                .AsNoTracking()
                 .FirstOrDefaultAsync(todo => todo.Id == todoId);
         }
     }
