@@ -1,7 +1,7 @@
-﻿using Microsoft.OpenApi.Models;
+﻿using Microsoft.IdentityModel.Tokens;
+using Microsoft.OpenApi.Models;
 using Sharoo.Server.API.Authentication;
 using Sharoo.Server.Application;
-using Microsoft.IdentityModel.Tokens;
 using System.Text;
 
 namespace Sharoo.Server.API.Extensions

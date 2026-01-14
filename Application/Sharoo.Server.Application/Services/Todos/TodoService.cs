@@ -1,5 +1,6 @@
 ﻿using Sharoo.Server.Data.Repositories.Todos;
 using Sharoo.Server.Domain.Entities;
+using Sharoo.Server.Domain.Exceptions;
 
 namespace Sharoo.Server.Application.Services.Todos
 {
@@ -15,20 +16,27 @@ namespace Sharoo.Server.Application.Services.Todos
         public async Task ChangeStatusAsync(Guid todoId)
         {
             var todo = await _repository.ReadByIdAsync(todoId);
-            if (todo is null) throw new Exception();
+            if (todo is null) throw new TodoNotFoundException();
+
+            if (todo.IsDone) todo.MarkAsDone();
+            else todo.MarkAsNotDone();
 
             await _repository.ChangeStatusAsync(todo);
         }
 
         public async Task CreateAsync(Todo todo)
         {
+            if (string.IsNullOrWhiteSpace(todo.Name))
+                throw new ArgumentException("Nome do TODO é obrigatório.");
+
+            todo.Start();
             await _repository.CreateAsync(todo);
         }
 
         public async Task DeleteAsync(Guid todoId)
         {
             var todo = await _repository.ReadByIdAsync(todoId);
-            if (todo is null) throw new Exception();
+            if (todo is null) throw new TodoNotFoundException();
 
             await _repository.DeleteAsync(todo);
         }
@@ -40,8 +48,8 @@ namespace Sharoo.Server.Application.Services.Todos
 
         public async Task<Todo> ReadByIdAsync(Guid todoId)
         {
-            Todo? todo = await _repository.ReadByIdAsync(todoId);
-            if (todo is null) throw new Exception();
+            var todo = await _repository.ReadByIdAsync(todoId);
+            if (todo is null) throw new TodoNotFoundException();
 
             return todo;
         }

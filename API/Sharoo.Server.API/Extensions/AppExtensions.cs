@@ -1,9 +1,13 @@
-﻿namespace Sharoo.Server.API.Extensions
+﻿using Sharoo.Server.API.Middlewares;
+
+namespace Sharoo.Server.API.Extensions
 {
     public static class AppExtensions
     {
         public static void UseArchitectures(this WebApplication app)
         {
+            app.UseMiddleware<ExceptionHandlingMiddleware>();
+
             if (app.Environment.IsDevelopment())
             {
                 app.UseSwagger();
