@@ -1,7 +1,9 @@
 ﻿using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using Sharoo.Server.API.Authentication;
+using Sharoo.Server.API.Services;
 using Sharoo.Server.Application;
+using Sharoo.Server.Application.Services.Notifications;
 using System.Text;
 
 namespace Sharoo.Server.API.Extensions
@@ -22,11 +24,30 @@ namespace Sharoo.Server.API.Extensions
                         ValidateIssuer = false,
                         ValidateAudience = false
                     };
+
+                    options.Events = new Microsoft.AspNetCore.Authentication.JwtBearer.JwtBearerEvents
+                    {
+                        OnMessageReceived = context =>
+                        {
+                            var accessToken = context.Request.Query["access_token"];
+                            var path = context.HttpContext.Request.Path;
+
+                            if (!string.IsNullOrEmpty(accessToken) && path.StartsWithSegments("/hubs/todo"))
+                            {
+                                context.Token = accessToken;
+                            }
+                            return Task.CompletedTask;
+                        }
+                    };
                 });
             builder.Services.AddAuthorization();
 
             builder.Services.AddControllers();
             builder.Services.AddEndpointsApiExplorer();
+
+            builder.Services.AddSignalR();
+
+            builder.Services.AddScoped<ITodoNotificationService, TodoNotificationService>();
 
             AddSwagger(builder);
 

@@ -1,4 +1,5 @@
-﻿using Sharoo.Server.API.Middlewares;
+﻿using Sharoo.Server.API.Hubs;
+using Sharoo.Server.API.Middlewares;
 
 namespace Sharoo.Server.API.Extensions
 {
@@ -23,6 +24,8 @@ namespace Sharoo.Server.API.Extensions
             app.UseAuthorization();
 
             app.MapControllers();
+
+            app.MapHub<TodoHub>("/hubs/todo");
         }
     }
 }

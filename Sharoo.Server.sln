@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio Version 17
-VisualStudioVersion = 17.14.36401.2
+# Visual Studio Version 18
+VisualStudioVersion = 18.2.11408.102 d18.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Sharoo.Server.API", "API\Sharoo.Server.API\Sharoo.Server.API.csproj", "{A102FD3C-2C3B-4E88-AB13-B4BBD916612B}"
 EndProject
@@ -18,6 +18,10 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "API", "API", "{9A0CE7C3-E632-46FD-BB6B-62FF710C530A}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Sharoo.Server.Data", "Infrastructure\Sharoo.Server.Data\Sharoo.Server.Data.csproj", "{5E3C59AD-2946-4826-83BB-A3C65A90B0E5}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{1021E9E8-D772-4DEB-85D9-6B8D7EB5C038}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Sharoo.Server.UnitTests", "Tests\Sharoo.Server.UnitTests\Sharoo.Server.UnitTests.csproj", "{6F3ABC1B-31C0-4CCF-955D-C9249EB65E26}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -41,6 +45,10 @@ Global
 		{5E3C59AD-2946-4826-83BB-A3C65A90B0E5}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{5E3C59AD-2946-4826-83BB-A3C65A90B0E5}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{5E3C59AD-2946-4826-83BB-A3C65A90B0E5}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6F3ABC1B-31C0-4CCF-955D-C9249EB65E26}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6F3ABC1B-31C0-4CCF-955D-C9249EB65E26}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6F3ABC1B-31C0-4CCF-955D-C9249EB65E26}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6F3ABC1B-31C0-4CCF-955D-C9249EB65E26}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -50,6 +58,7 @@ Global
 		{0A5DB1E1-305C-4E68-A790-932E2B29937B} = {AC12B7BC-5713-4A69-85F8-DC4673E443CA}
 		{61E2CD6A-490D-4F4B-822D-84BD5059B509} = {0AE33579-69EA-4E34-ABD2-A35194E9C46D}
 		{5E3C59AD-2946-4826-83BB-A3C65A90B0E5} = {02EA681E-C7D8-13C7-8484-4AC65E1B71E8}
+		{6F3ABC1B-31C0-4CCF-955D-C9249EB65E26} = {1021E9E8-D772-4DEB-85D9-6B8D7EB5C038}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {6880B360-C892-4360-AAF6-B8517A30E74E}
