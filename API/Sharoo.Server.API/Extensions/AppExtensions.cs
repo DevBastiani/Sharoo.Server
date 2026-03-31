@@ -9,6 +9,8 @@ namespace Sharoo.Server.API.Extensions
         {
             app.UseMiddleware<ExceptionHandlingMiddleware>();
 
+            app.UseCors("AllowLocalhost");
+
             if (app.Environment.IsDevelopment())
             {
                 app.UseSwagger();

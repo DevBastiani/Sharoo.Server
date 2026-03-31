@@ -12,13 +12,11 @@ namespace Sharoo.Server.Application.DTOs.Todos.Create.Request
         [MaxLength(1000, ErrorMessage = "Descrição deve ter no máximo 1000 caracteres.")]
         public string? Description { get; set; }
 
-        public Guid UserId { get; set; }
-
-        public static Todo FromRequestToEntity(TodoCreateRequest request)
+        public static Todo FromRequestToEntity(TodoCreateRequest request, Guid userId)
         {
             return new Todo
             {
-                UserId = request.UserId,
+                UserId = userId,
                 Name = request.Title,
                 Description = request.Description
             };

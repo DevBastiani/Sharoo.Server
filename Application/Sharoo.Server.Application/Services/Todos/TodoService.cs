@@ -52,9 +52,9 @@ namespace Sharoo.Server.Application.Services.Todos
             await _notificationService.NotifyTodoDeletedAsync(todoId);
         }
 
-        public async Task<List<Todo>> ReadAsync()
+        public async Task<List<Todo>> ReadAsync(Guid userId)
         {
-            return await _repository.ReadAsync();
+            return await _repository.ReadAsync(userId);
         }
 
         public async Task<Todo> ReadByIdAsync(Guid todoId)

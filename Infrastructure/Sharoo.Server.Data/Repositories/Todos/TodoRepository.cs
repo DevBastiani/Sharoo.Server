@@ -14,7 +14,6 @@ namespace Sharoo.Server.Data.Repositories.Todos
 
         public async Task ChangeStatusAsync(Todo todo)
         {
-            todo.IsDone = !todo.IsDone;
             _context.Todos.Update(todo);
 
             await _context.SaveChangesAsync();
@@ -32,9 +31,10 @@ namespace Sharoo.Server.Data.Repositories.Todos
             await _context.SaveChangesAsync();
         }
 
-        public async Task<List<Todo>> ReadAsync()
+        public async Task<List<Todo>> ReadAsync(Guid userId)
         {
             return await _context.Todos
+                .Where(todo => todo.UserId == userId)
                 .ToListAsync();
         }
 

@@ -13,7 +13,7 @@
         public void MarkAsDone()
         {
             IsDone = true;
-            CompletedAt = DateTime.Now;
+            CompletedAt = DateTime.UtcNow;
         }
 
         public void MarkAsNotDone()

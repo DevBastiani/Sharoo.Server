@@ -6,7 +6,7 @@ namespace Sharoo.Server.Data.Repositories.Todos
     {
         Task CreateAsync(Todo todo);
         Task<Todo?> ReadByIdAsync(Guid todoId);
-        Task<List<Todo>> ReadAsync();
+        Task<List<Todo>> ReadAsync(Guid userId);
         Task DeleteAsync(Todo todo);
         Task ChangeStatusAsync(Todo todo);
     }

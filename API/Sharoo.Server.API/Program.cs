@@ -10,8 +10,8 @@ builder.Configuration.AddEnvironmentVariables();
 
 var app = builder.Build();
 
-app.Services.SeedDatabase();
-
 app.UseArchitectures();
+
+app.Services.SeedDatabase();
 
 app.Run();

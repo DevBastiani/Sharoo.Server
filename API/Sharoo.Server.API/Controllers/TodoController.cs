@@ -19,10 +19,19 @@ namespace Sharoo.Server.API.Controllers
             _service = service;
         }
 
+        private Guid GetCurrentUserId()
+        {
+            var claim = User.FindFirst("Id")?.Value;
+            if (string.IsNullOrEmpty(claim) || !Guid.TryParse(claim, out var userId))
+                throw new UnauthorizedAccessException("Usuário não autenticado.");
+            return userId;
+        }
+
         [HttpGet]
         public async Task<IActionResult> GetAll()
         {
-            var todos = await _service.ReadAsync();
+            var userId = GetCurrentUserId();
+            var todos = await _service.ReadAsync(userId);
             return Ok(TodoReadResponse.FromEntitiesToResponse(todos));
         }
 
@@ -30,8 +39,6 @@ namespace Sharoo.Server.API.Controllers
         public async Task<IActionResult> GetById(Guid id)
         {
             var todo = await _service.ReadByIdAsync(id);
-            if (todo is null) return NotFound();
-
             return Ok(TodoReadByIdResponse.FromEntityToResponse(todo));
         }
 
@@ -40,15 +47,14 @@ namespace Sharoo.Server.API.Controllers
         {
             if (!ModelState.IsValid) return BadRequest(ModelState);
 
-            await _service.CreateAsync(TodoCreateRequest.FromRequestToEntity(request));
+            var userId = GetCurrentUserId();
+            await _service.CreateAsync(TodoCreateRequest.FromRequestToEntity(request, userId));
             return Created();
         }
 
         [HttpPut("{id:guid}/status")]
         public async Task<IActionResult> ChangeStatus([FromRoute] Guid id)
         {
-            if (!ModelState.IsValid) return BadRequest(ModelState);
-
             await _service.ChangeStatusAsync(id);
             return NoContent();
         }
@@ -56,9 +62,6 @@ namespace Sharoo.Server.API.Controllers
         [HttpDelete("{id:guid}")]
         public async Task<IActionResult> Delete(Guid id)
         {
-            var todo = await _service.ReadByIdAsync(id);
-            if (todo is null) return NotFound();
-
             await _service.DeleteAsync(id);
             return NoContent();
         }

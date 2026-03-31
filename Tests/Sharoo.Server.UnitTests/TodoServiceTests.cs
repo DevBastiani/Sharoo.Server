@@ -19,29 +19,31 @@ namespace Sharoo.Server.UnitTests
         [Fact]
         public async Task ReadAsync_WhenTodosExist_ReturnsAllTodos()
         {
+            var userId = Guid.NewGuid();
             var todos = _fixture.CreateMultipleTodos(3);
             _fixture.RepositoryMock
-                .Setup(r => r.ReadAsync())
+                .Setup(r => r.ReadAsync(userId))
                 .ReturnsAsync(todos);
 
-            var result = await _fixture.Service.ReadAsync();
+            var result = await _fixture.Service.ReadAsync(userId);
 
             Assert.NotEmpty(result);
             Assert.Equal(3, result.Count);
-            _fixture.RepositoryMock.Verify(r => r.ReadAsync(), Times.Once);
+            _fixture.RepositoryMock.Verify(r => r.ReadAsync(userId), Times.Once);
         }
 
         [Fact]
         public async Task ReadAsync_WhenNoTodosExist_ReturnsEmptyList()
         {
+            var userId = Guid.NewGuid();
             _fixture.RepositoryMock
-                .Setup(r => r.ReadAsync())
+                .Setup(r => r.ReadAsync(userId))
                 .ReturnsAsync(new List<Todo>());
 
-            var result = await _fixture.Service.ReadAsync();
+            var result = await _fixture.Service.ReadAsync(userId);
 
             Assert.Empty(result);
-            _fixture.RepositoryMock.Verify(r => r.ReadAsync(), Times.Once);
+            _fixture.RepositoryMock.Verify(r => r.ReadAsync(userId), Times.Once);
         }
         #endregion
 

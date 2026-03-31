@@ -12,6 +12,18 @@ namespace Sharoo.Server.API.Extensions
     {
         public static void AddArchitectures(this WebApplicationBuilder builder)
         {
+            builder.Services.AddCors(options =>
+            {
+                options.AddPolicy("AllowLocalhost", policy =>
+                {
+                    policy
+                        .WithOrigins("http://localhost:3000", "http://localhost:5173", "http://localhost:8080")
+                        .AllowAnyMethod()
+                        .AllowAnyHeader()
+                        .AllowCredentials();
+                });
+            });
+
             builder.Services.AddAuthentication("Bearer")
                 .AddJwtBearer("Bearer", options =>
                 {
