@@ -38,6 +38,30 @@ namespace Sharoo.Server.Data.Repositories.Todos
                 .ToListAsync();
         }
 
+        public async Task<List<Todo>> ReadByFilterAsync(
+            Guid userId,
+            DateTime? createdFrom,
+            DateTime? createdTo,
+            DateTime? completedFrom,
+            DateTime? completedTo)
+        {
+            var query = _context.Todos.Where(todo => todo.UserId == userId);
+
+            if (createdFrom.HasValue)
+                query = query.Where(todo => todo.CreatedAt >= createdFrom.Value);
+
+            if (createdTo.HasValue)
+                query = query.Where(todo => todo.CreatedAt <= createdTo.Value);
+
+            if (completedFrom.HasValue)
+                query = query.Where(todo => todo.CompletedAt.HasValue && todo.CompletedAt >= completedFrom.Value);
+
+            if (completedTo.HasValue)
+                query = query.Where(todo => todo.CompletedAt.HasValue && todo.CompletedAt <= completedTo.Value);
+
+            return await query.ToListAsync();
+        }
+
         public async Task<Todo?> ReadByIdAsync(Guid todoId)
         {
             return await _context.Todos

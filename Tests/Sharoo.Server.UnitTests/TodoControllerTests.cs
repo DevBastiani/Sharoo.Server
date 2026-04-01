@@ -1,8 +1,9 @@
-﻿using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Moq;
 using Sharoo.Server.API.Controllers;
 using Sharoo.Server.Application.DTOs.Todos.Create.Request;
+using Sharoo.Server.Application.DTOs.Todos.Filter;
 using Sharoo.Server.Application.Services.Todos;
 using Sharoo.Server.Domain.Entities;
 using Sharoo.Server.Domain.Exceptions;
@@ -48,7 +49,7 @@ namespace Sharoo.Server.UnitTests
                 .Setup(s => s.ReadAsync(_userId))
                 .ReturnsAsync(todos);
 
-            var result = await _controller.GetAll();
+            var result = await _controller.GetAll(new TodoFilterRequest());
 
             var okResult = Assert.IsType<OkObjectResult>(result);
             Assert.NotNull(okResult.Value);
@@ -62,9 +63,10 @@ namespace Sharoo.Server.UnitTests
                 .Setup(s => s.ReadAsync(_userId))
                 .ReturnsAsync(new List<Todo>());
 
-            var result = await _controller.GetAll();
+            var result = await _controller.GetAll(new TodoFilterRequest());
 
             var okResult = Assert.IsType<OkObjectResult>(result);
+            Assert.NotNull(okResult.Value);
             _serviceMock.Verify(s => s.ReadAsync(_userId), Times.Once);
         }
 
@@ -82,12 +84,111 @@ namespace Sharoo.Server.UnitTests
                 .Setup(s => s.ReadAsync(_userId))
                 .ReturnsAsync(todos);
 
-            var result = await _controller.GetAll();
+            var result = await _controller.GetAll(new TodoFilterRequest());
 
             var okResult = Assert.IsType<OkObjectResult>(result);
             Assert.NotNull(okResult.Value);
-
             _serviceMock.Verify(s => s.ReadAsync(_userId), Times.Once);
+        }
+
+        [Fact]
+        public async Task GetAll_WithCreatedFromFilter_CallsReadByFilterAsync()
+        {
+            var createdFrom = DateTime.UtcNow.AddDays(-7);
+            var todos = new List<Todo>
+            {
+                new Todo { Id = Guid.NewGuid(), UserId = _userId, Name = "Recent Todo", IsDone = false, CreatedAt = DateTime.UtcNow }
+            };
+
+            _serviceMock
+                .Setup(s => s.ReadByFilterAsync(_userId, It.IsAny<TodoFilterRequest>()))
+                .ReturnsAsync(todos);
+
+            var result = await _controller.GetAll(new TodoFilterRequest { CreatedFrom = createdFrom });
+
+            var okResult = Assert.IsType<OkObjectResult>(result);
+            Assert.NotNull(okResult.Value);
+            _serviceMock.Verify(s => s.ReadByFilterAsync(_userId, It.IsAny<TodoFilterRequest>()), Times.Once);
+            _serviceMock.Verify(s => s.ReadAsync(It.IsAny<Guid>()), Times.Never);
+        }
+
+        [Fact]
+        public async Task GetAll_WithAllDateFilters_CallsReadByFilterAsync()
+        {
+            var now = DateTime.UtcNow;
+
+            _serviceMock
+                .Setup(s => s.ReadByFilterAsync(_userId, It.IsAny<TodoFilterRequest>()))
+                .ReturnsAsync(new List<Todo>());
+
+            var result = await _controller.GetAll(new TodoFilterRequest
+            {
+                CreatedFrom = now.AddDays(-30),
+                CreatedTo = now,
+                CompletedFrom = now.AddDays(-7),
+                CompletedTo = now
+            });
+
+            Assert.IsType<OkObjectResult>(result);
+            _serviceMock.Verify(s => s.ReadByFilterAsync(_userId, It.IsAny<TodoFilterRequest>()), Times.Once);
+            _serviceMock.Verify(s => s.ReadAsync(It.IsAny<Guid>()), Times.Never);
+        }
+        #endregion
+
+        #region GetByFilter Tests
+        [Fact]
+        public async Task GetByFilter_WithCreatedFromFilter_ReturnsFilteredTodos()
+        {
+            var filter = new TodoFilterRequest { CreatedFrom = DateTime.UtcNow.AddDays(-3) };
+            var todos = new List<Todo>
+            {
+                new Todo { Id = Guid.NewGuid(), UserId = _userId, Name = "Filtered Todo", IsDone = false, CreatedAt = DateTime.UtcNow }
+            };
+
+            _serviceMock
+                .Setup(s => s.ReadByFilterAsync(_userId, It.IsAny<TodoFilterRequest>()))
+                .ReturnsAsync(todos);
+
+            var result = await _controller.GetByFilter(filter);
+
+            var okResult = Assert.IsType<OkObjectResult>(result);
+            Assert.NotNull(okResult.Value);
+            _serviceMock.Verify(s => s.ReadByFilterAsync(_userId, It.IsAny<TodoFilterRequest>()), Times.Once);
+        }
+
+        [Fact]
+        public async Task GetByFilter_WithCompletedFromFilter_ReturnsCompletedTodos()
+        {
+            var filter = new TodoFilterRequest { CompletedFrom = DateTime.UtcNow.AddDays(-1) };
+            var todos = new List<Todo>
+            {
+                new Todo { Id = Guid.NewGuid(), UserId = _userId, Name = "Done Todo", IsDone = true, CreatedAt = DateTime.UtcNow.AddDays(-2), CompletedAt = DateTime.UtcNow }
+            };
+
+            _serviceMock
+                .Setup(s => s.ReadByFilterAsync(_userId, It.IsAny<TodoFilterRequest>()))
+                .ReturnsAsync(todos);
+
+            var result = await _controller.GetByFilter(filter);
+
+            Assert.IsType<OkObjectResult>(result);
+            _serviceMock.Verify(s => s.ReadByFilterAsync(_userId, It.IsAny<TodoFilterRequest>()), Times.Once);
+        }
+
+        [Fact]
+        public async Task GetByFilter_WithNoMatchingTodos_ReturnsEmptyList()
+        {
+            var filter = new TodoFilterRequest { CreatedFrom = DateTime.UtcNow.AddYears(1) };
+
+            _serviceMock
+                .Setup(s => s.ReadByFilterAsync(_userId, It.IsAny<TodoFilterRequest>()))
+                .ReturnsAsync(new List<Todo>());
+
+            var result = await _controller.GetByFilter(filter);
+
+            var okResult = Assert.IsType<OkObjectResult>(result);
+            Assert.NotNull(okResult.Value);
+            _serviceMock.Verify(s => s.ReadByFilterAsync(_userId, It.IsAny<TodoFilterRequest>()), Times.Once);
         }
         #endregion
 

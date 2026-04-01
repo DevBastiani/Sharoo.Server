@@ -1,4 +1,5 @@
-﻿using Sharoo.Server.Application.Services.Notifications;
+﻿using Sharoo.Server.Application.DTOs.Todos.Filter;
+using Sharoo.Server.Application.Services.Notifications;
 using Sharoo.Server.Data.Repositories.Todos;
 using Sharoo.Server.Domain.Entities;
 using Sharoo.Server.Domain.Exceptions;
@@ -55,6 +56,16 @@ namespace Sharoo.Server.Application.Services.Todos
         public async Task<List<Todo>> ReadAsync(Guid userId)
         {
             return await _repository.ReadAsync(userId);
+        }
+
+        public async Task<List<Todo>> ReadByFilterAsync(Guid userId, TodoFilterRequest filter)
+        {
+            return await _repository.ReadByFilterAsync(
+                userId,
+                filter.CreatedFrom,
+                filter.CreatedTo,
+                filter.CompletedFrom,
+                filter.CompletedTo);
         }
 
         public async Task<Todo> ReadByIdAsync(Guid todoId)

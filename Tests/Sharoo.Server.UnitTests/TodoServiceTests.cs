@@ -1,4 +1,5 @@
 ﻿using Moq;
+using Sharoo.Server.Application.DTOs.Todos.Filter;
 using Sharoo.Server.Domain.Entities;
 using Sharoo.Server.Domain.Exceptions;
 
@@ -44,6 +45,95 @@ namespace Sharoo.Server.UnitTests
 
             Assert.Empty(result);
             _fixture.RepositoryMock.Verify(r => r.ReadAsync(userId), Times.Once);
+        }
+        #endregion
+
+        #region ReadByFilterAsync Tests
+        [Fact]
+        public async Task ReadByFilterAsync_WithCreatedFromFilter_ReturnsFilteredTodos()
+        {
+            var userId = Guid.NewGuid();
+            var createdFrom = DateTime.UtcNow.AddDays(-7);
+            var filter = new TodoFilterRequest { CreatedFrom = createdFrom };
+            var todos = _fixture.CreateMultipleTodos(2);
+
+            _fixture.RepositoryMock
+                .Setup(r => r.ReadByFilterAsync(userId, createdFrom, null, null, null))
+                .ReturnsAsync(todos);
+
+            var result = await _fixture.Service.ReadByFilterAsync(userId, filter);
+
+            Assert.Equal(2, result.Count);
+            _fixture.RepositoryMock.Verify(
+                r => r.ReadByFilterAsync(userId, createdFrom, null, null, null),
+                Times.Once);
+        }
+
+        [Fact]
+        public async Task ReadByFilterAsync_WithAllFilters_PassesAllParametersToRepository()
+        {
+            var userId = Guid.NewGuid();
+            var now = DateTime.UtcNow;
+            var filter = new TodoFilterRequest
+            {
+                CreatedFrom = now.AddDays(-30),
+                CreatedTo = now,
+                CompletedFrom = now.AddDays(-7),
+                CompletedTo = now
+            };
+            var todos = _fixture.CreateMultipleTodos(1);
+
+            _fixture.RepositoryMock
+                .Setup(r => r.ReadByFilterAsync(
+                    userId,
+                    filter.CreatedFrom,
+                    filter.CreatedTo,
+                    filter.CompletedFrom,
+                    filter.CompletedTo))
+                .ReturnsAsync(todos);
+
+            var result = await _fixture.Service.ReadByFilterAsync(userId, filter);
+
+            Assert.Single(result);
+            _fixture.RepositoryMock.Verify(
+                r => r.ReadByFilterAsync(
+                    userId,
+                    filter.CreatedFrom,
+                    filter.CreatedTo,
+                    filter.CompletedFrom,
+                    filter.CompletedTo),
+                Times.Once);
+        }
+
+        [Fact]
+        public async Task ReadByFilterAsync_WithNoMatchingTodos_ReturnsEmptyList()
+        {
+            var userId = Guid.NewGuid();
+            var filter = new TodoFilterRequest { CreatedFrom = DateTime.UtcNow.AddYears(1) };
+
+            _fixture.RepositoryMock
+                .Setup(r => r.ReadByFilterAsync(userId, filter.CreatedFrom, null, null, null))
+                .ReturnsAsync(new List<Todo>());
+
+            var result = await _fixture.Service.ReadByFilterAsync(userId, filter);
+
+            Assert.Empty(result);
+        }
+
+        [Fact]
+        public async Task ReadByFilterAsync_WithEmptyFilter_ReturnsAllTodosViaFilterPath()
+        {
+            var userId = Guid.NewGuid();
+            var filter = new TodoFilterRequest();
+            var todos = _fixture.CreateMultipleTodos(3);
+
+            _fixture.RepositoryMock
+                .Setup(r => r.ReadByFilterAsync(userId, null, null, null, null))
+                .ReturnsAsync(todos);
+
+            var result = await _fixture.Service.ReadByFilterAsync(userId, filter);
+
+            Assert.Equal(3, result.Count);
         }
         #endregion
 
